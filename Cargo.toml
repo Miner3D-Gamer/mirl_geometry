@@ -23,31 +23,26 @@ all_enum_extensions = ["strum", "enum_ext"]
 serde = [
     "dep:serde",
     "mirl_derive",
-    "mirl_core/serde",
     "mirl_geometry_core/serde",
 ]
 bitcode = [
     "dep:bitcode",
     "mirl_derive",
-    "mirl_core/bitcode",
     "mirl_geometry_core/bitcode",
 ]
 wincode = [
     "dep:wincode",
     "mirl_derive",
-    "mirl_core/wincode",
     "mirl_geometry_core/wincode",
 ]
 compactly = [
     "dep:compactly",
     "mirl_derive",
-    "mirl_core/compactly",
     "mirl_geometry_core/serde",
 ]
 zerocopy = [
     "dep:zerocopy",
     "mirl_derive",
-    "mirl_core/zerocopy",
     "mirl_geometry_core/zerocopy",
 ]
 
@@ -58,7 +53,7 @@ enum_ext = ["dep:enum_ext", "mirl_derive"]
 
 [dependencies]
 mirl_extensions = { version = "0.0.0-alpha" }
-mirl_core = { version = "0.0.0-alpha" }
+# mirl_core = { version = "0.0.0-alpha" }
 mirl_geometry_core = { version = "0.0.0-alpha" }
 
 mirl_derive = { version = "0.0.0-alpha", optional = true }
