@@ -28,8 +28,8 @@ impl<T> UniformRange<T>
 where
     T: TryIntoPatch<f64>
         + Copy
-        + ConstZero
-        + ConstOne
+        + Zero
+        + One
         + PartialOrd
         + Add<Output = T>
         + Sub<Output = T>
@@ -40,9 +40,9 @@ where
 {
     #[must_use]
     /// Create a new `UnitRange` with value 0.0
-    pub const fn zero() -> Self {
+    pub fn zero() -> Self {
         Self {
-            value: T::ZERO,
+            value: T::zero(),
             //_phantom: core::marker::PhantomData,
         }
     }
@@ -117,8 +117,8 @@ where
     fn max_value() -> T {
         // We need to compute the maximum value for the unsigned type
         // For unsigned types, this is typically 2^n - 1
-        let zero = T::ZERO;
-        let one = T::ONE;
+        let zero = T::zero();
+        let one = T::one();
 
         // Find the max by bit shifting or using a more direct approach
         // This is a bit tricky generically, so we'll use NumCast with known max values
@@ -172,7 +172,7 @@ where
     /// Saturating subtraction
     pub fn saturating_sub(self, other: Self) -> Self {
         let result = if self.value < other.value {
-            T::ZERO
+            T::zero()
         } else {
             self.value - other.value
         };
@@ -184,8 +184,8 @@ where
 impl<T> Add for UniformRange<T>
 where
     T: Copy
-        + ConstZero
-        + ConstOne
+        + Zero
+        + One
         + core::fmt::Debug
         + PartialOrd
         + Add<Output = T>
@@ -206,8 +206,8 @@ impl<T> Sub for UniformRange<T>
 where
     T: TryIntoPatch<f64>
         + Copy
-        + ConstZero
-        + ConstOne
+        + Zero
+        + One
         + PartialOrd
         + core::fmt::Debug
         + Add<Output = T>
@@ -264,7 +264,7 @@ where
 
 //     fn div(self, rhs: Self) -> Self::Output {
 //         if rhs.value == T::zero() {
-//             return Self::ONE; // Division by zero gives max value (1.0)
+//             return Self::one(); // Division by zero gives max value (1.0)
 //         }
 
 //         // Convert to f64, divide, then convert back
@@ -350,8 +350,8 @@ impl<T> core::fmt::Display for UniformRange<T>
 where
     T: TryIntoPatch<f64>
         + Copy
-        + ConstZero
-        + ConstOne
+        + Zero
+        + One
         + PartialOrd
         + core::fmt::Debug
         + Add<Output = T>
@@ -369,8 +369,8 @@ impl<T> core::fmt::Debug for UniformRange<T>
 where
     T: TryIntoPatch<f64>
         + Copy
-        + ConstZero
-        + ConstOne
+        + Zero
+        + One
         + PartialOrd
         + core::fmt::Debug
         + Add<Output = T>
@@ -413,8 +413,8 @@ pub type UnitRangeUsize = UniformRange<usize>;
 
 //     #[test]
 //     fn test_basic_functionality() {
-//         let zero = UnitRangeU8::ZERO;
-//         let one = UnitRangeU8::ONE;
+//         let zero = UnitRangeU8::zero();
+//         let one = UnitRangeU8::one();
 //         let half = UnitRangeU8::from_f64(0.5);
 
 //         assert_eq!(zero.to_f64(), 0.0);
@@ -455,7 +455,7 @@ pub type UnitRangeUsize = UniformRange<usize>;
 
 //     #[test]
 //     fn test_saturation() {
-//         let max = UnitRangeU8::ONE;
+//         let max = UnitRangeU8::one();
 //         let small = UnitRangeU8::from_f64(0.1);
 
 //         let saturated_add = max + small;

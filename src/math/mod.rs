@@ -1,8 +1,10 @@
-/// A collision extension focusing on 2d rectangles
-pub mod geometry;
+//! Math related functions
+pub use mirl_geometry_core::math::*;
+// /// A collision extension focusing on 2d rectangles
+// pub mod geometry;
 
-/// Mathematical equations
-pub mod expressions;
+// /// Mathematical equations
+// pub mod expressions;
 
 //#[cfg(feature = "std")]
 mod uniform_range;
@@ -13,7 +15,16 @@ pub use uniform_range::*;
 // pub mod positioning;
 
 /// Sets the length of the vector to 1 changing the direction it's facing
-pub fn normalize_vector<T: NumberWithMonotoneOps + Abs + Sqrt + Copy>(
+pub const fn normalize_vector<
+    T: [const] Abs
+        + [const] Sqrt
+        + Copy
+        + [const] core::ops::Add<Output = T>
+        + [const] core::ops::Sub<Output = T>
+        + [const] core::ops::Mul<Output = T>
+        + [const] core::ops::Div<Output = T>
+        + [const] core::ops::Rem<Output = T>,
+>(
     x: T,
     y: T,
     z: T,
@@ -22,36 +33,10 @@ pub fn normalize_vector<T: NumberWithMonotoneOps + Abs + Sqrt + Copy>(
     (x / v, y / v, z / v)
 }
 
-/// A trait for defining a number
-pub const trait NumberWithMonotoneOps:
-    core::cmp::PartialOrd
-    + core::marker::Sized
-    + [const] core::ops::Add<Output = Self>
-    + [const] core::ops::Sub<Output = Self>
-    + [const] core::ops::Mul<Output = Self>
-    + [const] core::ops::Div<Output = Self>
-    + [const] core::ops::Rem<Output = Self>
-{
-}
-
-// What's up with this formatting?
-impl<
-    T: core::cmp::PartialOrd
-        + core::ops::Add<Output = Self>
-        + core::ops::Sub<Output = Self>
-        + core::ops::Mul<Output = Self>
-        + core::ops::Div<Output = Self>
-        + core::ops::Rem<Output = Self>,
-> NumberWithMonotoneOps for T
-{
-}
-
 use mirl_extensions::*;
 
 /// A trait for simple but useful operations that weirdly enough do not exist in std
-pub const trait ConvenientOps:
-    Bounded + Copy + core::cmp::PartialOrd
-{
+pub const trait ConvenientOps {
     /// Get the half of a value
     #[must_use]
     fn half(&self) -> Self;
@@ -69,35 +54,39 @@ pub const trait ConvenientOps:
     fn equals_half(&self) -> bool;
 }
 
-impl<
-    T: [const] ConstNumbers128
-        + [const] NumberWithMonotoneOps
+const impl<
+    T: [const] core::ops::Add<Output = Self>
+        + [const] core::ops::Sub<Output = Self>
+        + [const] core::ops::Mul<Output = Self>
+        + [const] core::ops::Div<Output = Self>
+        + [const] core::ops::Rem<Output = Self>
+        + [const] Numbers128
         + Copy
-        + [const] Bounded
+        + [const] UpperBounded
         + [const] PartialOrd,
-> const ConvenientOps for T
+> ConvenientOps for T
 {
     fn half(&self) -> Self {
-        *self / Self::CONST_2
+        *self / Self::num_2()
     }
     fn more_than_half(&self) -> bool {
-        *self > Self::half(&Self::MAX)
+        *self > Self::half(&Self::max_bound())
     }
     fn less_than_half(&self) -> bool {
-        *self < Self::half(&Self::MAX)
+        *self < Self::half(&Self::max_bound())
     }
     fn equals_half(&self) -> bool {
-        *self == Self::half(&Self::MAX)
+        *self == Self::half(&Self::max_bound())
     }
     fn double(&self) -> Self {
-        *self * Self::CONST_2
+        *self * Self::num_2()
     }
 }
 
 /// Progress must be between 0 and 1 for this to work as intended most of the times
 pub const fn interpolate<
     T: Copy
-        + ConstOne
+        + [const] One
         + [const] core::ops::Add<Output = T>
         + [const] core::ops::Sub<Output = T>
         + [const] core::ops::Mul<Output = T>,
@@ -106,11 +95,11 @@ pub const fn interpolate<
     end: T,
     progress: T,
 ) -> T {
-    start * (T::ONE - progress) + end * progress
+    start * (T::one() - progress) + end * progress
 }
 /// Get the position of area A if you wanted to center it in area B
 pub fn get_center_position_of_object_for_object<
-    T: core::ops::Div<Output = T> + core::ops::Sub<Output = T> + ConstNumbers128,
+    T: core::ops::Div<Output = T> + core::ops::Sub<Output = T> + Numbers128,
 >(
     inner_width: T,
     inner_height: T,
@@ -119,8 +108,8 @@ pub fn get_center_position_of_object_for_object<
 ) -> (T, T) {
     // This is one hell of a way of getting the number 2 for a type
     (
-        outer_width.div(T::CONST_2) - inner_width.div(T::CONST_2),
-        outer_height.div(T::CONST_2) - inner_height.div(T::CONST_2),
+        outer_width.div(T::num_2()) - inner_width.div(T::num_2()),
+        outer_height.div(T::num_2()) - inner_height.div(T::num_2()),
     )
 }
 

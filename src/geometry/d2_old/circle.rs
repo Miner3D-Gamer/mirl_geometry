@@ -35,7 +35,7 @@ impl<const CS: bool, T: NumberWithMonotoneOps + Copy> Pos2D<T, Circle<T, CS>> {
     }
 }
 
-impl<const CS: bool, T: NumberWithMonotoneOps + Copy + ConstZero + Sqrt>
+impl<const CS: bool, T: NumberWithMonotoneOps + Copy + Zero + Sqrt>
     Pos2D<T, Circle<T, CS>>
 {
     /// Get the closest point on the edge to the defined point
@@ -45,7 +45,7 @@ impl<const CS: bool, T: NumberWithMonotoneOps + Copy + ConstZero + Sqrt>
         let dx = point.0 - cx;
         let dy = point.1 - cy;
         let dist_sq = dx * dx + dy * dy;
-        if core::intrinsics::unlikely(dist_sq == T::ZERO) {
+        if core::intrinsics::unlikely(dist_sq == T::zero()) {
             return (cx + self.get_shape().radius, cy); // arbitrary edge point when point == center
         }
         let dist = dist_sq.sqrt();
