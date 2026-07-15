@@ -8,26 +8,72 @@ authors.workspace = true
 
 [features]
 default = ["std"]
-std = []
+std = [
+    "bitcode?/std",
+    "mirl_extensions/std",
+    "mirl_geometry_core/std",
+    "serde?/std",
+    "strum?/std",
+    "wincode?/std",
+    "zerocopy?/std",
+]
 # Does nothing by itself. Needs another codec or enum flag to do something
-mirl_derive = ["dep:mirl_derive"]
+mirl_derive = ["dep:mirl_derive", "mirl_geometry_core/mirl_derive"]
 # Compatibility with ffi
-c_compatible = ["mirl_derive"]
+c_compatible = [
+    "mirl_derive",
+    "mirl_extensions/c_compatible",
+    "mirl_geometry_core/c_compatible",
+]
 # Enables all codecs
-all_codecs = ["serde", "bitcode", "wincode", "compactly", "zerocopy"]
-# All enum extensions
-all_enum_extensions = ["strum", "enum_ext"]
+all_codecs = [
+    "serde",
+    "bitcode",
+    "wincode",
+    "compactly",
+    "zerocopy",
+    "mirl_geometry_core/all_codecs",
+]
+all_enum_extensions = ["strum", "enum_ext", "mirl_geometry_core/all_enum_extensions"]
 # Codec stuff
-serde = ["dep:serde", "mirl_derive", "mirl_geometry_core/serde"]
-bitcode = ["dep:bitcode", "mirl_derive", "mirl_geometry_core/bitcode"]
-wincode = ["dep:wincode", "mirl_derive", "mirl_geometry_core/wincode"]
-compactly = ["dep:compactly", "mirl_derive", "mirl_geometry_core/serde"]
-zerocopy = ["dep:zerocopy", "mirl_derive", "mirl_geometry_core/zerocopy"]
+serde = [
+    "dep:serde",
+    "dep:mirl_derive",
+    "mirl_geometry_core/serde",
+    "mirl_geometry_core/serde",
+    "bitcode?/serde",
+]
+bitcode = [
+    "dep:bitcode",
+    "mirl_derive",
+    "mirl_geometry_core/bitcode",
+    "mirl_geometry_core/bitcode",
+]
+wincode = [
+    "dep:wincode",
+    "mirl_derive",
+    "mirl_geometry_core/wincode",
+    "mirl_geometry_core/wincode",
+]
+compactly = [
+    "dep:compactly",
+    "dep:mirl_derive",
+    "mirl_geometry_core/serde",
+    "mirl_geometry_core/serde",
+    "mirl_geometry_core/compactly",
+]
+zerocopy = [
+    "dep:zerocopy",
+    "mirl_derive",
+    "mirl_geometry_core/zerocopy",
+    "mirl_geometry_core/zerocopy",
+]
 # Enum extensions
-strum = ["dep:strum", "mirl_derive"]
-enum_ext = ["dep:enum_ext", "mirl_derive"]
+strum = ["dep:strum", "mirl_derive", "mirl_geometry_core/strum"]
+enum_ext = ["dep:enum_ext", "mirl_derive", "mirl_geometry_core/enum_ext"]
 
 [dependencies]
+# All enum extensions
 bitcode = { version = "0.6", optional = true, default-features = false, features = [
     "derive",
 ] }
