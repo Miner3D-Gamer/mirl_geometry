@@ -9,7 +9,7 @@ use crate::math::geometry::GetShapeDirectionType;
 /// - `true`  → bottom has a *higher* numeric value than top (e.g. screen-space Y-down)
 /// - `false` → top has a *higher* numeric value than bottom (e.g. math/world-space Y-up)
 #[allow(missing_docs)]
-#[cfg_attr(feature = "mirl_derive", mirl_derive::derive_all)]
+#[mirl_macros::derive_all]
 pub struct Rectangle<T, const BOTTOM_HIGHER: bool> {
     pub x: T,
     pub y: T,

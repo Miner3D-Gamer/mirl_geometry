@@ -35,6 +35,7 @@ pub const fn normalize_vector<
 
 use mirl_extensions::*;
 
+#[cfg(all(feature = "f128", feature = "f16"))]
 /// A trait for simple but useful operations that weirdly enough do not exist in std
 pub const trait ConvenientOps {
     /// Get the half of a value
@@ -54,13 +55,14 @@ pub const trait ConvenientOps {
     fn equals_half(&self) -> bool;
 }
 
+#[cfg(all(feature = "f128", feature = "f16"))]
 const impl<
     T: [const] core::ops::Add<Output = Self>
         + [const] core::ops::Sub<Output = Self>
         + [const] core::ops::Mul<Output = Self>
         + [const] core::ops::Div<Output = Self>
         + [const] core::ops::Rem<Output = Self>
-        + [const] Numbers128
+        + [const] Numbers2Pow2
         + Copy
         + [const] UpperBounded
         + [const] PartialOrd,
@@ -97,9 +99,10 @@ pub const fn interpolate<
 ) -> T {
     start * (T::one() - progress) + end * progress
 }
+#[cfg(all(feature = "f128", feature = "f16"))]
 /// Get the position of area A if you wanted to center it in area B
 pub fn get_center_position_of_object_for_object<
-    T: core::ops::Div<Output = T> + core::ops::Sub<Output = T> + Numbers128,
+    T: core::ops::Div<Output = T> + core::ops::Sub<Output = T> + Numbers2Pow2,
 >(
     inner_width: T,
     inner_height: T,

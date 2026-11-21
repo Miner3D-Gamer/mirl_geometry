@@ -12,10 +12,9 @@ use core::ops::{
 
 use mirl_extensions::*;
 
-#[cfg_attr(feature = "mirl_derive", mirl_derive::derive_all)]
+#[mirl_macros::derive_all]
 /// A type that represents a uniform range from 0.0 to 1.0 using any unsigned integer type
 /// The internal value is stored as an unsigned integer where 0 represents 0.0 and MAX represents 1.0
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct UniformRange<T: Copy + core::fmt::Debug> {
     value: T,
     //_phantom: core::marker::PhantomData<T>,
@@ -365,29 +364,29 @@ where
     }
 }
 
-impl<T> core::fmt::Debug for UniformRange<T>
-where
-    T: TryIntoPatch<f64>
-        + Copy
-        + Zero
-        + One
-        + PartialOrd
-        + core::fmt::Debug
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>,
-    f64: TryIntoPatch<T>,
-{
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(
-            f,
-            "UnitRange(raw: {:?}, value: {:.6?})",
-            self.value,
-            self.to_f64()
-        )
-    }
-}
+// impl<T> core::fmt::Debug for UniformRange<T>
+// where
+//     T: TryIntoPatch<f64>
+//         + Copy
+//         + Zero
+//         + One
+//         + PartialOrd
+//         + core::fmt::Debug
+//         + Add<Output = T>
+//         + Sub<Output = T>
+//         + Mul<Output = T>
+//         + Div<Output = T>,
+//     f64: TryIntoPatch<T>,
+// {
+//     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+//         write!(
+//             f,
+//             "UnitRange(raw: {:?}, value: {:.6?})",
+//             self.value,
+//             self.to_f64()
+//         )
+//     }
+// }
 
 /// Unit range with u8 storage - 256 values, lowest precision, smallest memory footprint.
 pub type UnitRangeU8 = UniformRange<u8>;

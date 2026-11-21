@@ -5,7 +5,7 @@ use crate::math::{
     ConvenientOps, NumberWithMonotoneOps,
 };
 
-#[cfg_attr(feature = "mirl_derive", mirl_derive::derive_all)]
+#[mirl_macros::derive_all]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 /// A simple Rectangle defining computational limits
 #[allow(missing_docs)]

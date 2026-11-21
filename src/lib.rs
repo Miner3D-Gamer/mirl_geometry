@@ -3,6 +3,8 @@
 #![feature(const_trait_impl)]
 #![feature(const_cmp)]
 #![feature(f16)]
+#![feature(derive_const)]
+#![feature(const_clone)]
 // #![feature(const_trait_impl)]
 
 // mod math;

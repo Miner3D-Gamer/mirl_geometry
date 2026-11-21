@@ -2,7 +2,7 @@
 
 use crate::math::expressions::d2::{FlipExpression, GetY};
 
-#[cfg_attr(feature = "mirl_derive", mirl_derive::derive_all)]
+#[mirl_macros::derive_all]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Hash)]
 /// A struct holding x for the given expression
 pub struct XHolder<T, Exp> {
